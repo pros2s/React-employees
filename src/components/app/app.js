@@ -14,18 +14,18 @@ class App extends Component {
     super(props);
     this.state = {
       employerData: [
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId()},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId()},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId()},
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId()},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId()},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId()}
+        { name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId() },
+        { name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId() },
+        { name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId() },
+        { name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId() },
+        { name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId() },
+        { name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId() }
       ]
     };
   }
 
   deleteItem = (id) => {
-    this.setState(({employerData}) => ({
+    this.setState(({ employerData }) => ({
         employerData: employerData.filter(item => item.id !== id)
       }
     )
@@ -49,13 +49,13 @@ class App extends Component {
       id: nextId()
     };
 
-    this.setState(({employerData}) => ({
+    this.setState(({ employerData }) => ({
       employerData: [...employerData, newItem]
     }));
   }
 
   onToggleProp = (id, prop) => {
-    this.setState(({employerData}) => ({
+    this.setState(({ employerData }) => ({
       employerData: employerData.map((item) => (
         item.id === id ? {...item, [prop]: !item[prop]} : item
       ))
@@ -63,11 +63,13 @@ class App extends Component {
   }
 
   render() {
-    const { employerData } = this.state;
+    const employeesCounter = this.state.employerData.length;
+    const increasedCounter = this.state.employerData.filter((item) => item.increase).length;
 
     return (
       <div className="app">
-        <AppInfo />
+        <AppInfo employeesCounter={ employeesCounter }
+          increasedCounter={ increasedCounter }/>
 
         <div className="search-panel">
           <SearchPanel/>
@@ -75,12 +77,12 @@ class App extends Component {
         </div>
 
         <EmployeesList
-          employerData={employerData}
-          onDelete={this.deleteItem}
-          onToggleProp={this.onToggleProp}
+          employerData={ this.state.employerData }
+          onDelete={ this.deleteItem }
+          onToggleProp={ this.onToggleProp }
         />
         <EmployeesAddForm
-          onAdd={this.addItem}
+          onAdd={ this.addItem }
         />
       </div>
     );
