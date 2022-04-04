@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import nextId from "react-id-generator";
 
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
@@ -13,12 +14,12 @@ class App extends Component {
     super(props);
     this.state = {
       employerData: [
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, id: 1},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: true, id: 2},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, id: 3},
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, id: 4},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: true, id: 5},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, id: 6}
+        {name: 'Anthony', surname: 'Burgess', salary: 15000, id: nextId()},
+        {name: 'Jorj', surname: 'Oruell', salary: 25000, id: nextId()},
+        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, id: nextId()},
+        {name: 'Anthony', surname: 'Burgess', salary: 15000, id: nextId()},
+        {name: 'Jorj', surname: 'Oruell', salary: 25000, id: nextId()},
+        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, id: nextId()}
       ]
     };
   }
@@ -40,6 +41,19 @@ class App extends Component {
     );
   }
 
+  addItem = (name, surname, salary) => {
+    const newItem = {
+      name,
+      surname,
+      salary,
+      id: nextId()
+    };
+
+    this.setState(({employerData}) => ({
+      employerData: [...employerData, newItem]
+    }));
+  }
+
   render() {
     const { employerData } = this.state;
 
@@ -56,7 +70,9 @@ class App extends Component {
           employerData={employerData}
           onDelete={this.deleteItem}
         />
-        <EmployeesAddForm/>
+        <EmployeesAddForm
+          onAdd={this.addItem}
+        />
       </div>
     );
   }
