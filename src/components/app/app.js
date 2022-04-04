@@ -14,12 +14,12 @@ class App extends Component {
     super(props);
     this.state = {
       employerData: [
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, id: nextId()},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, id: nextId()},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, id: nextId()},
-        {name: 'Anthony', surname: 'Burgess', salary: 15000, id: nextId()},
-        {name: 'Jorj', surname: 'Oruell', salary: 25000, id: nextId()},
-        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, id: nextId()}
+        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId()},
+        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId()},
+        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId()},
+        {name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId()},
+        {name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId()},
+        {name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId()}
       ]
     };
   }
@@ -54,6 +54,14 @@ class App extends Component {
     }));
   }
 
+  onToggleProp = (id, prop) => {
+    this.setState(({employerData}) => ({
+      employerData: employerData.map((item) => (
+        item.id === id ? {...item, [prop]: !item[prop]} : item
+      ))
+    }));
+  }
+
   render() {
     const { employerData } = this.state;
 
@@ -69,6 +77,7 @@ class App extends Component {
         <EmployeesList
           employerData={employerData}
           onDelete={this.deleteItem}
+          onToggleProp={this.onToggleProp}
         />
         <EmployeesAddForm
           onAdd={this.addItem}
