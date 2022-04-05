@@ -14,15 +14,15 @@ class App extends Component {
     super(props);
     this.state = {
       employerData: [
-        { name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId() },
-        { name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId() },
-        { name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId() },
-        { name: 'Anthony', surname: 'Burgess', salary: 15000, increase: false, like: false, id: nextId() },
-        { name: 'Jorj', surname: 'Oruell', salary: 25000, increase: false, like: false, id: nextId() },
-        { name: 'Fyodor', surname: 'Dostoevsky', salary: 10000, increase: false, like: false, id: nextId() }
-      ]
+        { name: 'Anthony', surname: 'Burgess', salary: 25000, increase: false, like: false, id: nextId() },
+        { name: 'Jorj', surname: 'Oruell', salary: 25001, increase: false, like: false, id: nextId() },
+        { name: 'Fyodor', surname: 'Dostoevsky', salary: 2503, increase: false, like: false, id: nextId() },
+        { name: 'Ernest ', surname: 'Hemingway', salary: 25034, increase: false, like: false, id: nextId() }
+      ],
+      term: ''
     };
   }
+
 
   deleteItem = (id) => {
     this.setState(({ employerData }) => ({
@@ -41,6 +41,7 @@ class App extends Component {
     );
   }
 
+
   addItem = (name, surname, salary) => {
     const newItem = {
       name,
@@ -54,6 +55,7 @@ class App extends Component {
     }));
   }
 
+
   onToggleProp = (id, prop) => {
     this.setState(({ employerData }) => ({
       employerData: employerData.map((item) => (
@@ -62,9 +64,25 @@ class App extends Component {
     }));
   }
 
+
+  searchItems = (items, term) => {
+    return (term.length === 0) ?
+     items :
+     items.filter((item) => (
+        `${item.name} ${item.surname}`.toLowerCase().includes(term) ||
+        String(item.salary).includes(term)
+      ));
+  }
+
+  onUpdateSearch = (term) => this.setState({term});
+
+
   render() {
-    const employeesCounter = this.state.employerData.length;
-    const increasedCounter = this.state.employerData.filter((item) => item.increase).length;
+    const { employerData, term } = this.state;
+    const searchedData = this.searchItems(employerData, term);
+
+    const employeesCounter = employerData.length;
+    const increasedCounter = employerData.filter((item) => item.increase).length;
 
     return (
       <div className="app">
@@ -72,12 +90,12 @@ class App extends Component {
           increasedCounter={ increasedCounter }/>
 
         <div className="search-panel">
-          <SearchPanel/>
+          <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
           <AppFilter/>
         </div>
 
         <EmployeesList
-          employerData={ this.state.employerData }
+          employerData={ searchedData }
           onDelete={ this.deleteItem }
           onToggleProp={ this.onToggleProp }
         />
