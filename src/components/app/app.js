@@ -14,12 +14,13 @@ class App extends Component {
     super(props);
     this.state = {
       employerData: [
-        { name: 'Anthony', surname: 'Burgess', salary: 25000, increase: false, like: false, id: nextId() },
-        { name: 'Jorj', surname: 'Oruell', salary: 25001, increase: false, like: false, id: nextId() },
-        { name: 'Fyodor', surname: 'Dostoevsky', salary: 2503, increase: false, like: false, id: nextId() },
-        { name: 'Ernest ', surname: 'Hemingway', salary: 25034, increase: false, like: false, id: nextId() }
+        { name: 'Anthony', surname: 'Burgess', salary: 250, increase: false, like: false, id: nextId() },
+        { name: 'Jorj', surname: 'Oruell', salary: 2500, increase: false, like: false, id: nextId() },
+        { name: 'Fyodor', surname: 'Dostoevsky', salary: 1000, increase: false, like: false, id: nextId() },
+        { name: 'Ernest ', surname: 'Hemingway', salary: 750, increase: false, like: false, id: nextId() }
       ],
-      term: ''
+      term: '',
+      filterFlag: 'all'
     };
   }
 
@@ -74,12 +75,25 @@ class App extends Component {
       ));
   }
 
-  onUpdateSearch = (term) => this.setState({term});
+  onUpdateSearch = (term) => this.setState({ term });
+
+
+  setFilter = (items, flag) => {
+    switch (flag) {
+      case 'like': return items.filter((item) => ( item.like ));
+      case 'increase': return items.filter((item) => ( item.increase ));
+      case 'betterThousand': return items.filter((item) => ( item.salary > 1000 ));
+      default: return items;
+    }
+  }
+
+  onClickFilter = (filterFlag) => this.setState({ filterFlag });
 
 
   render() {
-    const { employerData, term } = this.state;
-    const searchedData = this.searchItems(employerData, term);
+    const { employerData, term, filterFlag } = this.state;
+    const filteredData = this.setFilter(employerData, filterFlag);
+    const searchedData = this.searchItems(filteredData, term);
 
     const employeesCounter = employerData.length;
     const increasedCounter = employerData.filter((item) => item.increase).length;
@@ -91,7 +105,7 @@ class App extends Component {
 
         <div className="search-panel">
           <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-          <AppFilter/>
+          <AppFilter filterFlag={filterFlag} onClickFilter={this.onClickFilter}/>
         </div>
 
         <EmployeesList
@@ -99,6 +113,7 @@ class App extends Component {
           onDelete={ this.deleteItem }
           onToggleProp={ this.onToggleProp }
         />
+
         <EmployeesAddForm
           onAdd={ this.addItem }
         />
