@@ -9,9 +9,35 @@
 
 .add-form {
   margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 480px) {
+  .add-form {
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .add-form input {
-  width: 350px;
+  width: 245px;
+
+  margin-bottom: 10px;
   margin-right: 20px;
+}
+
+@media screen and (max-width: 480px) {
+  .add-form input {
+    width: 100%;
+  }
+}
+
+.add-form button {
+  height: 38px;
+}
+
+@media screen and (max-width: 480px) {
+  .add-form button {
+    margin-right: 20px;
+  }
 }
